@@ -27,10 +27,10 @@ export function CreateMissionDialog({ mission, trigger }: CreateMissionDialogPro
     status: mission?.status ?? "on-track",
     phase: mission?.phase ?? "",
     unit: mission?.unit ?? "hectares",
-    target: mission?.target?.toString() ?? "1000",
-    progress: mission?.progress?.toString() ?? "0",
-    funding_target: mission?.fundingTarget?.toString() ?? "0",
-    funding_raised: mission?.fundingRaised?.toString() ?? "0",
+    target: (mission?.target)?.toString() ?? "1000",
+    progress: (mission?.progress)?.toString() ?? "0",
+    funding_target: (mission?.funding_target ?? mission?.fundingTarget)?.toString() ?? "0",
+    funding_raised: (mission?.funding_raised ?? mission?.fundingRaised)?.toString() ?? "0",
     eta: mission?.eta ?? "",
   });
 

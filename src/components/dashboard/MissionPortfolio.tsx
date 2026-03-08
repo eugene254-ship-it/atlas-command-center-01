@@ -1,6 +1,6 @@
 import type { Mission } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
-import { TrendingUp, TrendingDown, Minus, LayoutGrid, List } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, LayoutGrid, List, Pencil } from "lucide-react";
 import { useState } from "react";
 import { CreateMissionDialog } from "./CreateMissionDialog";
 
@@ -89,14 +89,29 @@ export function MissionPortfolio({ missions, selectedId, onSelect, onDrillDown, 
                   </div>
                 </div>
 
-                {onDrillDown && (
-                  <button
-                    onClick={(e) => { e.stopPropagation(); onDrillDown(m); }}
-                    className="text-[9px] font-mono text-primary hover:text-primary/80 transition-colors"
-                  >
-                    View Details →
-                  </button>
-                )}
+                <div className="flex items-center gap-2">
+                  {canEdit && (
+                    <CreateMissionDialog
+                      mission={m}
+                      trigger={
+                        <button
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground hover:text-primary transition-colors"
+                        >
+                          <Pencil className="w-3 h-3" /> Edit
+                        </button>
+                      }
+                    />
+                  )}
+                  {onDrillDown && (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); onDrillDown(m); }}
+                      className="text-[9px] font-mono text-primary hover:text-primary/80 transition-colors"
+                    >
+                      View Details →
+                    </button>
+                  )}
+                </div>
               </div>
             );
           })}
@@ -114,6 +129,7 @@ export function MissionPortfolio({ missions, selectedId, onSelect, onDrillDown, 
                 <th className="text-right px-3 py-2 font-medium">Milestones</th>
                 <th className="text-right px-3 py-2 font-medium">Verified</th>
                 <th className="text-left px-3 py-2 font-medium">Risk</th>
+                {canEdit && <th className="text-left px-3 py-2 font-medium">Edit</th>}
                 <th className="text-left px-4 py-2 font-medium">ETA</th>
               </tr>
             </thead>
@@ -139,6 +155,18 @@ export function MissionPortfolio({ missions, selectedId, onSelect, onDrillDown, 
                   <td className="px-3 py-2.5 text-right font-mono text-foreground">{m.milestonesComplete}/{m.milestonesTotal}</td>
                   <td className="px-3 py-2.5 text-right font-mono text-foreground">{m.verificationCoverage}%</td>
                   <td className="px-3 py-2.5">{m.topBlocker !== "None critical" ? <span className="text-status-at-risk">⚠</span> : <span className="text-status-on-track">✓</span>}</td>
+                  {canEdit && (
+                    <td className="px-3 py-2.5">
+                      <CreateMissionDialog
+                        mission={m}
+                        trigger={
+                          <button onClick={(e) => e.stopPropagation()} className="text-muted-foreground hover:text-primary transition-colors">
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                        }
+                      />
+                    </td>
+                  )}
                   <td className="px-4 py-2.5 font-mono text-muted-foreground">{m.eta}</td>
                 </tr>
               ))}
