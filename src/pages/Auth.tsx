@@ -200,7 +200,7 @@ export default function Auth() {
               disabled={submitting}
               className="w-full py-2.5 rounded bg-primary text-primary-foreground text-sm font-display font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
-              {submitting ? "Processing..." : mode === "login" ? "Sign In" : "Create Account"}
+              {submitting ? "Processing..." : mode === "forgot" ? "Send Reset Link" : mode === "login" ? "Sign In" : "Create Account"}
             </button>
           </form>
         </div>
