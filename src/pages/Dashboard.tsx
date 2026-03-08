@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { MissionOverview } from "@/components/dashboard/MissionOverview";
+import { ActivityLog } from "@/components/dashboard/ActivityLog";
 import { KPICards } from "@/components/dashboard/KPICards";
 import { MissionPortfolio } from "@/components/dashboard/MissionPortfolio";
 import { MilestoneTracker } from "@/components/dashboard/MilestoneTracker";
