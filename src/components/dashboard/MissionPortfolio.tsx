@@ -129,6 +129,7 @@ export function MissionPortfolio({ missions, selectedId, onSelect, onDrillDown, 
                 <th className="text-right px-3 py-2 font-medium">Milestones</th>
                 <th className="text-right px-3 py-2 font-medium">Verified</th>
                 <th className="text-left px-3 py-2 font-medium">Risk</th>
+                {canEdit && <th className="text-left px-3 py-2 font-medium">Edit</th>}
                 <th className="text-left px-4 py-2 font-medium">ETA</th>
               </tr>
             </thead>
