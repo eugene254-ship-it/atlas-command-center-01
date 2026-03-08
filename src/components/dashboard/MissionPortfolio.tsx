@@ -33,6 +33,31 @@ export function MissionPortfolio({ missions, selectedId, onSelect, onDrillDown, 
           </div>
         </div>
         <div className="flex items-center gap-2">
+          {canEdit && (
+            <button
+              onClick={() => {
+                const headers = ["Title","Status","Owner","Priority","Progress %","Funding %","Regions","Partners","Milestones","Verified %","ETA","Top Blocker"];
+                const rows = missions.map(m => [
+                  `"${m.title}"`, m.status, `"${m.owner}"`, m.priority,
+                  ((m.progress / m.target) * 100).toFixed(0),
+                  ((m.fundingRaised / m.fundingTarget) * 100).toFixed(0),
+                  m.activeRegions, m.activePartners,
+                  `${m.milestonesComplete}/${m.milestonesTotal}`,
+                  m.verificationCoverage, m.eta, `"${m.topBlocker}"`
+                ].join(","));
+                const csv = [headers.join(","), ...rows].join("\n");
+                const blob = new Blob([csv], { type: "text/csv" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url; a.download = `missions-export-${new Date().toISOString().slice(0,10)}.csv`;
+                a.click(); URL.revokeObjectURL(url);
+                toast.success("Missions exported as CSV");
+              }}
+              className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-mono text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
+            >
+              <Download className="w-3.5 h-3.5" /> Export CSV
+            </button>
+          )}
           {canEdit && <CreateMissionDialog />}
           <div className="flex items-center gap-1 bg-secondary/50 rounded p-0.5">
             <button onClick={() => setView("grid")} className={cn("p-1.5 rounded", view === "grid" ? "bg-primary/15 text-primary" : "text-muted-foreground")}>
