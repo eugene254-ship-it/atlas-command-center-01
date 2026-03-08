@@ -75,12 +75,12 @@ const Dashboard = () => {
 
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-0">
                   <div className="xl:col-span-2 border-r border-border">
-                    <MilestoneTracker missionId={selectedMission.id} />
+                    <MilestoneTracker missionId={selectedMission.id} canEdit={canEdit} />
                     <FundingModule />
                   </div>
                   <div className="border-t xl:border-t-0">
                     <CommandAlerts />
-                    <BlockersPanel />
+                    <BlockersPanel missions={missions} canEdit={canEdit} />
                   </div>
                 </div>
 
