@@ -94,7 +94,7 @@ export default function Auth() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {mode === "signup" && (
+            {mode === "signup" && mode !== "forgot" && (
               <div>
                 <label className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider block mb-1">
                   Display Name
