@@ -308,6 +308,30 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       regions: {
         Row: {
           created_at: string
@@ -344,6 +368,24 @@ export type Database = {
           partners?: number
           status?: Database["public"]["Enums"]["region_status"]
           updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
         }
         Relationships: []
       }
@@ -428,10 +470,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       alert_severity: "critical" | "high" | "medium" | "low"
+      app_role: "operator" | "donor"
       milestone_status:
         | "not-started"
         | "in-progress"
@@ -578,6 +627,7 @@ export const Constants = {
   public: {
     Enums: {
       alert_severity: ["critical", "high", "medium", "low"],
+      app_role: ["operator", "donor"],
       milestone_status: [
         "not-started",
         "in-progress",
