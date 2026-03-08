@@ -1,8 +1,10 @@
-import { milestones } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
+import { useMilestones } from "@/hooks/useDashboardData";
+import { CreateMilestoneDialog } from "./CreateMilestoneDialog";
 
 interface MilestoneTrackerProps {
   missionId: string;
+  canEdit?: boolean;
 }
 
 const statusConfig: Record<string, { label: string; class: string; bg: string }> = {
@@ -14,16 +16,19 @@ const statusConfig: Record<string, { label: string; class: string; bg: string }>
   "verified": { label: "VERIFIED", class: "text-status-verified", bg: "bg-status-verified" },
 };
 
-export function MilestoneTracker({ missionId }: MilestoneTrackerProps) {
-  const missionMilestones = milestones.filter((m) => m.missionId === missionId);
+export function MilestoneTracker({ missionId, canEdit }: MilestoneTrackerProps) {
+  const { data: missionMilestones = [] } = useMilestones(missionId);
 
   return (
     <div className="border-b border-border">
-      <div className="px-4 sm:px-6 py-3 border-b border-border">
-        <h2 className="font-display font-semibold text-sm text-foreground">Milestone Execution Tracker</h2>
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
-          {missionMilestones.length} milestones · Gantt timeline
-        </p>
+      <div className="px-4 sm:px-6 py-3 border-b border-border flex items-center justify-between">
+        <div>
+          <h2 className="font-display font-semibold text-sm text-foreground">Milestone Execution Tracker</h2>
+          <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+            {missionMilestones.length} milestones · Gantt timeline
+          </p>
+        </div>
+        {canEdit && <CreateMilestoneDialog missionId={missionId} />}
       </div>
 
       <div className="p-4 sm:p-6 space-y-2 overflow-x-auto">
@@ -37,38 +42,22 @@ export function MilestoneTracker({ missionId }: MilestoneTrackerProps) {
         </div>
 
         {missionMilestones.map((ms) => {
-          const sc = statusConfig[ms.status];
+          const sc = statusConfig[ms.status] ?? statusConfig["not-started"];
           return (
             <div key={ms.id} className="flex items-center gap-3 group">
-              {/* Name & status */}
               <div className="w-[200px] sm:w-[280px] shrink-0 pr-3">
                 <div className="text-xs font-display text-foreground leading-tight truncate">{ms.name}</div>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <span className={cn("text-[8px] font-mono font-bold uppercase tracking-wider", sc.class)}>
-                    {sc.label}
-                  </span>
+                  <span className={cn("text-[8px] font-mono font-bold uppercase tracking-wider", sc.class)}>{sc.label}</span>
                   <span className="text-[9px] font-mono text-muted-foreground">{ms.owner}</span>
                 </div>
               </div>
-
-              {/* Gantt bar */}
               <div className="flex-1 min-w-[400px]">
                 <div className="relative h-6 bg-secondary/30 rounded overflow-hidden">
-                  {/* Background bar (planned) */}
-                  <div
-                    className="absolute top-0 left-0 h-full bg-secondary/50 rounded"
-                    style={{ width: "100%" }}
-                  />
-                  {/* Progress bar */}
-                  <div
-                    className={cn("absolute top-0 left-0 h-full rounded transition-all duration-700", sc.bg)}
-                    style={{ width: `${ms.actualProgress}%`, opacity: 0.7 }}
-                  />
-                  {/* Progress text */}
+                  <div className="absolute top-0 left-0 h-full bg-secondary/50 rounded" style={{ width: "100%" }} />
+                  <div className={cn("absolute top-0 left-0 h-full rounded transition-all duration-700", sc.bg)} style={{ width: `${ms.actualProgress}%`, opacity: 0.7 }} />
                   <div className="absolute inset-0 flex items-center px-2">
-                    <span className="text-[9px] font-mono font-bold text-foreground">
-                      {ms.actualProgress}%
-                    </span>
+                    <span className="text-[9px] font-mono font-bold text-foreground">{ms.actualProgress}%</span>
                   </div>
                 </div>
               </div>
@@ -77,9 +66,7 @@ export function MilestoneTracker({ missionId }: MilestoneTrackerProps) {
         })}
 
         {missionMilestones.length === 0 && (
-          <div className="text-center py-8 text-xs text-muted-foreground font-mono">
-            No milestones found for this mission
-          </div>
+          <div className="text-center py-8 text-xs text-muted-foreground font-mono">No milestones found for this mission</div>
         )}
       </div>
     </div>
