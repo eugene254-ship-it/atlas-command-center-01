@@ -26,7 +26,7 @@ interface DashboardNavProps {
   role?: string | null;
 }
 
-export function DashboardNav({ activeSection, onSectionChange, viewMode, onViewModeChange }: DashboardNavProps) {
+export function DashboardNav({ activeSection, onSectionChange, viewMode, onViewModeChange, onSignOut, userEmail, role }: DashboardNavProps) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-14 border-b border-border bg-background/95 backdrop-blur-sm">
       <div className="flex items-center h-full px-4 gap-1">
