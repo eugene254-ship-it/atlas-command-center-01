@@ -36,6 +36,7 @@ const Dashboard = () => {
   const isDonor = role === "donor";
   const [viewMode, setViewMode] = useState<"executive" | "operator">(isDonor ? "executive" : "operator");
   const effectiveViewMode = isDonor ? "executive" : viewMode;
+  const canEdit = role === "operator";
 
   // Keep selectedMission in sync when missions load
   if (liveMissions && liveMissions.length > 0 && selectedMission.id === mockMissions[0]?.id && liveMissions[0].id !== mockMissions[0]?.id) {
