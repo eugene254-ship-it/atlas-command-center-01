@@ -70,7 +70,7 @@ export default function Auth() {
               onClick={() => setMode("login")}
               className={cn(
                 "flex-1 py-2 text-xs font-mono font-medium rounded transition-colors",
-                mode === "login" ? "bg-primary/15 text-primary" : "text-muted-foreground"
+                mode === "login" || mode === "forgot" ? "bg-primary/15 text-primary" : "text-muted-foreground"
               )}
             >
               SIGN IN
@@ -85,6 +85,13 @@ export default function Auth() {
               CREATE ACCOUNT
             </button>
           </div>
+
+          {mode === "forgot" && (
+            <div className="mb-4">
+              <h3 className="font-display font-semibold text-foreground text-sm mb-1">Reset Password</h3>
+              <p className="text-[10px] font-mono text-muted-foreground">Enter your email and we'll send a reset link.</p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === "signup" && (
