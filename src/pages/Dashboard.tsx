@@ -10,6 +10,9 @@ import { RegionsModule } from "@/components/dashboard/RegionsModule";
 import { VerificationModule } from "@/components/dashboard/VerificationModule";
 import { BlockersPanel } from "@/components/dashboard/BlockersPanel";
 import { DashboardNav } from "@/components/dashboard/DashboardNav";
+import { FilterBar, defaultFilters, type FilterState } from "@/components/dashboard/FilterBar";
+import { ViewModeToggle } from "@/components/dashboard/ViewModeToggle";
+import { ExecutiveSummary } from "@/components/dashboard/ExecutiveSummary";
 import { missions } from "@/lib/mock-data";
 
 type Section = "overview" | "missions" | "milestones" | "funding" | "partners" | "regions" | "verification" | "risks";
@@ -17,58 +20,75 @@ type Section = "overview" | "missions" | "milestones" | "funding" | "partners" |
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState<Section>("overview");
   const [selectedMission, setSelectedMission] = useState(missions[0]);
+  const [filters, setFilters] = useState<FilterState>(defaultFilters);
+  const [viewMode, setViewMode] = useState<"executive" | "operator">("operator");
 
   return (
     <div className="min-h-screen bg-background">
-      <DashboardNav activeSection={activeSection} onSectionChange={setActiveSection} />
+      <DashboardNav
+        activeSection={activeSection}
+        onSectionChange={setActiveSection}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+      />
 
       <main className="pt-[3.5rem]">
-        {activeSection === "overview" && (
-          <div className="space-y-0">
-            <MissionOverview mission={selectedMission} />
-            <KPICards mission={selectedMission} />
+        {/* Filter bar - always visible */}
+        <FilterBar filters={filters} onFiltersChange={setFilters} />
 
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-0">
-              <div className="xl:col-span-2 border-r border-border">
-                <MilestoneTracker missionId={selectedMission.id} />
-                <FundingModule />
-              </div>
-              <div className="border-t xl:border-t-0">
-                <CommandAlerts />
-                <BlockersPanel />
-              </div>
-            </div>
+        {/* Executive mode */}
+        {viewMode === "executive" && activeSection === "overview" ? (
+          <ExecutiveSummary missions={missions} />
+        ) : (
+          <>
+            {activeSection === "overview" && (
+              <div className="space-y-0">
+                <MissionOverview mission={selectedMission} />
+                <KPICards mission={selectedMission} />
 
-            <MissionPortfolio
-              missions={missions}
-              selectedId={selectedMission.id}
-              onSelect={(m) => { setSelectedMission(m); setActiveSection("overview"); }}
-            />
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-0">
-              <div className="border-r border-border">
-                <RegionsModule />
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-0">
+                  <div className="xl:col-span-2 border-r border-border">
+                    <MilestoneTracker missionId={selectedMission.id} />
+                    <FundingModule />
+                  </div>
+                  <div className="border-t xl:border-t-0">
+                    <CommandAlerts />
+                    <BlockersPanel />
+                  </div>
+                </div>
+
+                <MissionPortfolio
+                  missions={missions}
+                  selectedId={selectedMission.id}
+                  onSelect={(m) => { setSelectedMission(m); setActiveSection("overview"); }}
+                />
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-0">
+                  <div className="border-r border-border">
+                    <RegionsModule />
+                  </div>
+                  <div>
+                    <PartnersModule />
+                  </div>
+                </div>
+                <VerificationModule />
               </div>
-              <div>
-                <PartnersModule />
-              </div>
-            </div>
-            <VerificationModule />
-          </div>
+            )}
+
+            {activeSection === "missions" && (
+              <MissionPortfolio
+                missions={missions}
+                selectedId={selectedMission.id}
+                onSelect={(m) => { setSelectedMission(m); setActiveSection("overview"); }}
+              />
+            )}
+            {activeSection === "milestones" && <MilestoneTracker missionId={selectedMission.id} />}
+            {activeSection === "funding" && <FundingModule />}
+            {activeSection === "partners" && <PartnersModule />}
+            {activeSection === "regions" && <RegionsModule />}
+            {activeSection === "verification" && <VerificationModule />}
+            {activeSection === "risks" && <BlockersPanel />}
+          </>
         )}
-
-        {activeSection === "missions" && (
-          <MissionPortfolio
-            missions={missions}
-            selectedId={selectedMission.id}
-            onSelect={(m) => { setSelectedMission(m); setActiveSection("overview"); }}
-          />
-        )}
-        {activeSection === "milestones" && <MilestoneTracker missionId={selectedMission.id} />}
-        {activeSection === "funding" && <FundingModule />}
-        {activeSection === "partners" && <PartnersModule />}
-        {activeSection === "regions" && <RegionsModule />}
-        {activeSection === "verification" && <VerificationModule />}
-        {activeSection === "risks" && <BlockersPanel />}
       </main>
     </div>
   );

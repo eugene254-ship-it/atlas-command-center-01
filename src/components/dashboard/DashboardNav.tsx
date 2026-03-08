@@ -3,6 +3,7 @@ import {
   LayoutDashboard, Target, ListChecks, DollarSign, Users, Globe, 
   ShieldCheck, AlertTriangle, Radio
 } from "lucide-react";
+import { ViewModeToggle } from "./ViewModeToggle";
 
 const navItems = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -18,9 +19,11 @@ const navItems = [
 interface DashboardNavProps {
   activeSection: string;
   onSectionChange: (section: any) => void;
+  viewMode: "executive" | "operator";
+  onViewModeChange: (mode: "executive" | "operator") => void;
 }
 
-export function DashboardNav({ activeSection, onSectionChange }: DashboardNavProps) {
+export function DashboardNav({ activeSection, onSectionChange, viewMode, onViewModeChange }: DashboardNavProps) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-14 border-b border-border bg-background/95 backdrop-blur-sm">
       <div className="flex items-center h-full px-4 gap-1">
@@ -35,10 +38,8 @@ export function DashboardNav({ activeSection, onSectionChange }: DashboardNavPro
           </div>
         </div>
 
-        {/* Divider */}
         <div className="w-px h-6 bg-border mr-2 shrink-0" />
 
-        {/* Nav Items */}
         <nav className="flex items-center gap-0.5 overflow-x-auto scrollbar-none">
           {navItems.map((item) => (
             <button
@@ -57,8 +58,9 @@ export function DashboardNav({ activeSection, onSectionChange }: DashboardNavPro
           ))}
         </nav>
 
-        {/* Right side */}
         <div className="ml-auto flex items-center gap-3 shrink-0">
+          <ViewModeToggle mode={viewMode} onToggle={onViewModeChange} />
+          <div className="w-px h-5 bg-border hidden lg:block" />
           <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-status-on-track/10 border border-status-on-track/20">
             <div className="w-1.5 h-1.5 rounded-full bg-status-on-track animate-pulse" />
             <span className="text-[10px] font-mono text-status-on-track uppercase tracking-wider">Live</span>
