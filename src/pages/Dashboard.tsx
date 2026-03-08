@@ -104,6 +104,7 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <VerificationModule />
+                <ActivityLog />
               </div>
             )}
 
