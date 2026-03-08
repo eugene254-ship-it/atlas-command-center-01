@@ -154,6 +154,18 @@ export function MissionPortfolio({ missions, selectedId, onSelect, onDrillDown, 
                   <td className="px-3 py-2.5 text-right font-mono text-foreground">{m.milestonesComplete}/{m.milestonesTotal}</td>
                   <td className="px-3 py-2.5 text-right font-mono text-foreground">{m.verificationCoverage}%</td>
                   <td className="px-3 py-2.5">{m.topBlocker !== "None critical" ? <span className="text-status-at-risk">⚠</span> : <span className="text-status-on-track">✓</span>}</td>
+                  {canEdit && (
+                    <td className="px-3 py-2.5">
+                      <CreateMissionDialog
+                        mission={m}
+                        trigger={
+                          <button onClick={(e) => e.stopPropagation()} className="text-muted-foreground hover:text-primary transition-colors">
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                        }
+                      />
+                    </td>
+                  )}
                   <td className="px-4 py-2.5 font-mono text-muted-foreground">{m.eta}</td>
                 </tr>
               ))}
