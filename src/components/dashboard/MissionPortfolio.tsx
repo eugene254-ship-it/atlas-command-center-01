@@ -17,7 +17,7 @@ const statusBadge = {
   "critical": "bg-status-critical/15 text-status-critical",
 };
 
-export function MissionPortfolio({ missions, selectedId, onSelect }: MissionPortfolioProps) {
+export function MissionPortfolio({ missions, selectedId, onSelect, onDrillDown }: MissionPortfolioProps) {
   const [view, setView] = useState<"grid" | "table">("grid");
 
   return (

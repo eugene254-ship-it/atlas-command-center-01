@@ -71,6 +71,17 @@ export function DashboardNav({ activeSection, onSectionChange, viewMode, onViewM
           <span className="text-[10px] font-mono text-muted-foreground hidden lg:block">
             {new Date().toISOString().slice(0, 16).replace("T", " · ")} UTC
           </span>
+          {userEmail && (
+            <div className="flex items-center gap-2">
+              <span className="text-[9px] font-mono text-muted-foreground hidden xl:block truncate max-w-[120px]">{userEmail}</span>
+              {role && <span className="text-[8px] font-mono text-primary/70 uppercase">{role}</span>}
+              {onSignOut && (
+                <button onClick={onSignOut} className="text-[9px] font-mono text-muted-foreground hover:text-foreground transition-colors">
+                  Sign out
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </header>
