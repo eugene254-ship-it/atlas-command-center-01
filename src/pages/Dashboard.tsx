@@ -92,6 +92,7 @@ const Dashboard = () => {
                   selectedId={selectedMission.id}
                   onSelect={(m) => { setSelectedMission(m); setActiveSection("overview"); }}
                   onDrillDown={(m) => navigate(`/mission/${m.id}`)}
+                  canEdit={canEdit}
                 />
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-0">
                   <div className="border-r border-border">
