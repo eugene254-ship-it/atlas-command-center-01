@@ -127,7 +127,7 @@ const Dashboard = () => {
             {activeSection === "verification" && <VerificationModule />}
             {activeSection === "risks" && (
               <div>
-                <BlockersPanel />
+                <BlockersPanel missions={missions} canEdit={canEdit} />
                 <ScenarioForecasting />
               </div>
             )}
