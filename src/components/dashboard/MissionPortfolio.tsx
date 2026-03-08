@@ -9,6 +9,7 @@ interface MissionPortfolioProps {
   selectedId: string;
   onSelect: (m: Mission) => void;
   onDrillDown?: (m: Mission) => void;
+  canEdit?: boolean;
 }
 
 const statusBadge = {
