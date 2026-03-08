@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Radio, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function Auth() {
   const { user, loading } = useAuth();
