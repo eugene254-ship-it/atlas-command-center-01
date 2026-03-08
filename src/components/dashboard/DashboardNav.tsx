@@ -21,6 +21,9 @@ interface DashboardNavProps {
   onSectionChange: (section: any) => void;
   viewMode: "executive" | "operator";
   onViewModeChange: (mode: "executive" | "operator") => void;
+  onSignOut?: () => void;
+  userEmail?: string | null;
+  role?: string | null;
 }
 
 export function DashboardNav({ activeSection, onSectionChange, viewMode, onViewModeChange }: DashboardNavProps) {
