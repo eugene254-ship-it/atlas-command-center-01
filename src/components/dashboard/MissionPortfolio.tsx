@@ -7,6 +7,7 @@ interface MissionPortfolioProps {
   missions: Mission[];
   selectedId: string;
   onSelect: (m: Mission) => void;
+  onDrillDown?: (m: Mission) => void;
 }
 
 const statusBadge = {
