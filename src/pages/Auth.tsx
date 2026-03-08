@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export default function Auth() {
   const { user, loading } = useAuth();
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [mode, setMode] = useState<"login" | "signup" | "forgot">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
