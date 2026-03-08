@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import Dashboard from "./pages/Dashboard";
 import MissionDetail from "./pages/MissionDetail";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/auth" element={<Auth />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/mission/:id" element={<ProtectedRoute><MissionDetail /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />

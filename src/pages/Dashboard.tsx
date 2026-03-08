@@ -36,6 +36,7 @@ const Dashboard = () => {
   const isDonor = role === "donor";
   const [viewMode, setViewMode] = useState<"executive" | "operator">(isDonor ? "executive" : "operator");
   const effectiveViewMode = isDonor ? "executive" : viewMode;
+  const canEdit = role === "operator";
 
   // Keep selectedMission in sync when missions load
   if (liveMissions && liveMissions.length > 0 && selectedMission.id === mockMissions[0]?.id && liveMissions[0].id !== mockMissions[0]?.id) {
@@ -74,12 +75,12 @@ const Dashboard = () => {
 
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-0">
                   <div className="xl:col-span-2 border-r border-border">
-                    <MilestoneTracker missionId={selectedMission.id} />
+                    <MilestoneTracker missionId={selectedMission.id} canEdit={canEdit} />
                     <FundingModule />
                   </div>
                   <div className="border-t xl:border-t-0">
                     <CommandAlerts />
-                    <BlockersPanel />
+                    <BlockersPanel missions={missions} canEdit={canEdit} />
                   </div>
                 </div>
 
@@ -91,6 +92,7 @@ const Dashboard = () => {
                   selectedId={selectedMission.id}
                   onSelect={(m) => { setSelectedMission(m); setActiveSection("overview"); }}
                   onDrillDown={(m) => navigate(`/mission/${m.id}`)}
+                  canEdit={canEdit}
                 />
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-0">
                   <div className="border-r border-border">
@@ -110,9 +112,10 @@ const Dashboard = () => {
                 selectedId={selectedMission.id}
                 onSelect={(m) => { setSelectedMission(m); setActiveSection("overview"); }}
                 onDrillDown={(m) => navigate(`/mission/${m.id}`)}
+                canEdit={canEdit}
               />
             )}
-            {activeSection === "milestones" && <MilestoneTracker missionId={selectedMission.id} />}
+            {activeSection === "milestones" && <MilestoneTracker missionId={selectedMission.id} canEdit={canEdit} />}
             {activeSection === "funding" && <FundingModule />}
             {activeSection === "partners" && <PartnersModule />}
             {activeSection === "regions" && (
@@ -124,7 +127,7 @@ const Dashboard = () => {
             {activeSection === "verification" && <VerificationModule />}
             {activeSection === "risks" && (
               <div>
-                <BlockersPanel />
+                <BlockersPanel missions={missions} canEdit={canEdit} />
                 <ScenarioForecasting />
               </div>
             )}

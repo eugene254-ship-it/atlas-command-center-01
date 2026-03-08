@@ -4,10 +4,11 @@ import { Navigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Radio, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function Auth() {
   const { user, loading } = useAuth();
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [mode, setMode] = useState<"login" | "signup" | "forgot">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -22,6 +23,16 @@ export default function Auth() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+
+    if (mode === "forgot") {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) toast.error(error.message);
+      else toast.success("Check your email for a password reset link.");
+      setSubmitting(false);
+      return;
+    }
 
     if (mode === "login") {
       const { error } = await signIn(email, password);
@@ -59,7 +70,7 @@ export default function Auth() {
               onClick={() => setMode("login")}
               className={cn(
                 "flex-1 py-2 text-xs font-mono font-medium rounded transition-colors",
-                mode === "login" ? "bg-primary/15 text-primary" : "text-muted-foreground"
+                mode === "login" || mode === "forgot" ? "bg-primary/15 text-primary" : "text-muted-foreground"
               )}
             >
               SIGN IN
@@ -74,6 +85,13 @@ export default function Auth() {
               CREATE ACCOUNT
             </button>
           </div>
+
+          {mode === "forgot" && (
+            <div className="mb-4">
+              <h3 className="font-display font-semibold text-foreground text-sm mb-1">Reset Password</h3>
+              <p className="text-[10px] font-mono text-muted-foreground">Enter your email and we'll send a reset link.</p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === "signup" && (
@@ -106,29 +124,36 @@ export default function Auth() {
               />
             </div>
 
-            <div>
-              <label className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider block mb-1">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  minLength={6}
-                  className="w-full px-3 py-2 rounded border border-border bg-background text-foreground text-sm font-mono focus:outline-none focus:ring-1 focus:ring-primary pr-10"
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
+            {mode !== "forgot" && (
+              <div>
+                <label className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider block mb-1">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    minLength={6}
+                    className="w-full px-3 py-2 rounded border border-border bg-background text-foreground text-sm font-mono focus:outline-none focus:ring-1 focus:ring-primary pr-10"
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                {mode === "login" && (
+                  <button type="button" onClick={() => setMode("forgot")} className="text-[10px] font-mono text-primary hover:text-primary/80 mt-1">
+                    Forgot password?
+                  </button>
+                )}
               </div>
-            </div>
+            )}
 
             {mode === "signup" && (
               <div>
@@ -175,7 +200,7 @@ export default function Auth() {
               disabled={submitting}
               className="w-full py-2.5 rounded bg-primary text-primary-foreground text-sm font-display font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
-              {submitting ? "Processing..." : mode === "login" ? "Sign In" : "Create Account"}
+              {submitting ? "Processing..." : mode === "forgot" ? "Send Reset Link" : mode === "login" ? "Sign In" : "Create Account"}
             </button>
           </form>
         </div>
