@@ -25,7 +25,7 @@ type Section = "overview" | "missions" | "milestones" | "funding" | "partners" |
 const Dashboard = () => {
   const { role, signOut, user } = useAuth();
   const navigate = useNavigate();
-  const { data: liveMissions, isLoading } = useMissions();
+  const { data: liveMissions } = useMissions();
   const missions = liveMissions && liveMissions.length > 0 ? liveMissions : mockMissions;
 
   const [activeSection, setActiveSection] = useState<Section>("overview");

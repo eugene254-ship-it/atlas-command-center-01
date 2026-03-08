@@ -58,7 +58,7 @@ export default function MissionDetail() {
   const sc = statusConfig[mission.status] ?? statusConfig["on-track"];
   const progressPct = (mission.progress / mission.target) * 100;
   const TrendIcon = mission.trend === "up" ? TrendingUp : mission.trend === "down" ? TrendingDown : Minus;
-  const missionBlockers = blockers?.filter((b) => b.action) ?? [];
+  const _missionBlockers = blockers?.filter((b) => b.action) ?? [];
 
   return (
     <div className="min-h-screen bg-background">

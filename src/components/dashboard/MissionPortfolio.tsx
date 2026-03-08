@@ -42,11 +42,11 @@ export function MissionPortfolio({ missions, selectedId, onSelect, onDrillDown }
           {missions.map((m) => {
             const TrendIcon = m.trend === "up" ? TrendingUp : m.trend === "down" ? TrendingDown : Minus;
             return (
-              <button
+              <div
                 key={m.id}
                 onClick={() => onSelect(m)}
                 className={cn(
-                  "text-left p-4 border-r border-b border-border hover:bg-secondary/30 transition-all",
+                  "text-left p-4 border-r border-b border-border hover:bg-secondary/30 transition-all cursor-pointer",
                   selectedId === m.id && "bg-primary/5 border-l-2 border-l-primary"
                 )}
               >
@@ -67,7 +67,7 @@ export function MissionPortfolio({ missions, selectedId, onSelect, onDrillDown }
                   <div className="h-full bg-primary rounded-full" style={{ width: `${(m.progress / m.target) * 100}%` }} />
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 text-[10px] font-mono">
+                <div className="grid grid-cols-3 gap-2 text-[10px] font-mono mb-2">
                   <div>
                     <span className="text-muted-foreground">Progress</span>
                     <div className="text-foreground font-medium">{((m.progress / m.target) * 100).toFixed(0)}%</div>
@@ -81,7 +81,16 @@ export function MissionPortfolio({ missions, selectedId, onSelect, onDrillDown }
                     <div className="text-foreground font-medium">{m.verificationCoverage}%</div>
                   </div>
                 </div>
-              </button>
+
+                {onDrillDown && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onDrillDown(m); }}
+                    className="text-[9px] font-mono text-primary hover:text-primary/80 transition-colors"
+                  >
+                    View Details →
+                  </button>
+                )}
+              </div>
             );
           })}
         </div>
