@@ -11,8 +11,9 @@ import { VerificationModule } from "@/components/dashboard/VerificationModule";
 import { BlockersPanel } from "@/components/dashboard/BlockersPanel";
 import { DashboardNav } from "@/components/dashboard/DashboardNav";
 import { FilterBar, defaultFilters, type FilterState } from "@/components/dashboard/FilterBar";
-import { ViewModeToggle } from "@/components/dashboard/ViewModeToggle";
 import { ExecutiveSummary } from "@/components/dashboard/ExecutiveSummary";
+import { AfricaMap } from "@/components/dashboard/AfricaMap";
+import { ScenarioForecasting } from "@/components/dashboard/ScenarioForecasting";
 import { missions } from "@/lib/mock-data";
 
 type Section = "overview" | "missions" | "milestones" | "funding" | "partners" | "regions" | "verification" | "risks";
@@ -33,10 +34,8 @@ const Dashboard = () => {
       />
 
       <main className="pt-[3.5rem]">
-        {/* Filter bar - always visible */}
         <FilterBar filters={filters} onFiltersChange={setFilters} />
 
-        {/* Executive mode */}
         {viewMode === "executive" && activeSection === "overview" ? (
           <ExecutiveSummary missions={missions} />
         ) : (
@@ -56,6 +55,9 @@ const Dashboard = () => {
                     <BlockersPanel />
                   </div>
                 </div>
+
+                <AfricaMap />
+                <ScenarioForecasting />
 
                 <MissionPortfolio
                   missions={missions}
@@ -84,9 +86,19 @@ const Dashboard = () => {
             {activeSection === "milestones" && <MilestoneTracker missionId={selectedMission.id} />}
             {activeSection === "funding" && <FundingModule />}
             {activeSection === "partners" && <PartnersModule />}
-            {activeSection === "regions" && <RegionsModule />}
+            {activeSection === "regions" && (
+              <div>
+                <AfricaMap />
+                <RegionsModule />
+              </div>
+            )}
             {activeSection === "verification" && <VerificationModule />}
-            {activeSection === "risks" && <BlockersPanel />}
+            {activeSection === "risks" && (
+              <div>
+                <BlockersPanel />
+                <ScenarioForecasting />
+              </div>
+            )}
           </>
         )}
       </main>
