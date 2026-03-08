@@ -202,3 +202,43 @@ export function useRealtimeAlerts(onNewAlert: (alert: any) => void) {
     return () => { supabase.removeChannel(channel); };
   }, [onNewAlert]);
 }
+
+export interface ActivityLogEntry {
+  id: string;
+  entity_type: string;
+  entity_id: string | null;
+  action: string;
+  description: string;
+  actor: string | null;
+  created_at: string;
+}
+
+export function useActivityLog(limit = 30) {
+  return useQuery({
+    queryKey: ["activity_log", limit],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("activity_log")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(limit);
+      if (error) throw error;
+      return (data ?? []) as ActivityLogEntry[];
+    },
+    refetchInterval: 15000,
+  });
+}
+
+export function useRealtimeActivityLog(onNew: (entry: ActivityLogEntry) => void) {
+  useEffect(() => {
+    const channel = supabase
+      .channel("activity-log-realtime")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "activity_log" },
+        (payload) => onNew(payload.new as ActivityLogEntry)
+      )
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [onNew]);
+}
