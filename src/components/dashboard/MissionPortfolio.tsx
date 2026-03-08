@@ -89,14 +89,29 @@ export function MissionPortfolio({ missions, selectedId, onSelect, onDrillDown, 
                   </div>
                 </div>
 
-                {onDrillDown && (
-                  <button
-                    onClick={(e) => { e.stopPropagation(); onDrillDown(m); }}
-                    className="text-[9px] font-mono text-primary hover:text-primary/80 transition-colors"
-                  >
-                    View Details →
-                  </button>
-                )}
+                <div className="flex items-center gap-2">
+                  {canEdit && (
+                    <CreateMissionDialog
+                      mission={m}
+                      trigger={
+                        <button
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground hover:text-primary transition-colors"
+                        >
+                          <Pencil className="w-3 h-3" /> Edit
+                        </button>
+                      }
+                    />
+                  )}
+                  {onDrillDown && (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); onDrillDown(m); }}
+                      className="text-[9px] font-mono text-primary hover:text-primary/80 transition-colors"
+                    >
+                      View Details →
+                    </button>
+                  )}
+                </div>
               </div>
             );
           })}
