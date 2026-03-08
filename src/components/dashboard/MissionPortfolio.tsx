@@ -25,17 +25,22 @@ export function MissionPortfolio({ missions, selectedId, onSelect, onDrillDown, 
   return (
     <div className="border-t border-border">
       <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-border">
-        <div>
-          <h2 className="font-display font-semibold text-sm text-foreground">Mission Portfolio</h2>
-          <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">{missions.length} active missions</p>
+        <div className="flex items-center gap-2">
+          <div>
+            <h2 className="font-display font-semibold text-sm text-foreground">Mission Portfolio</h2>
+            <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">{missions.length} active missions</p>
+          </div>
         </div>
-        <div className="flex items-center gap-1 bg-secondary/50 rounded p-0.5">
-          <button onClick={() => setView("grid")} className={cn("p-1.5 rounded", view === "grid" ? "bg-primary/15 text-primary" : "text-muted-foreground")}>
-            <LayoutGrid className="w-3.5 h-3.5" />
-          </button>
-          <button onClick={() => setView("table")} className={cn("p-1.5 rounded", view === "table" ? "bg-primary/15 text-primary" : "text-muted-foreground")}>
-            <List className="w-3.5 h-3.5" />
-          </button>
+        <div className="flex items-center gap-2">
+          {canEdit && <CreateMissionDialog />}
+          <div className="flex items-center gap-1 bg-secondary/50 rounded p-0.5">
+            <button onClick={() => setView("grid")} className={cn("p-1.5 rounded", view === "grid" ? "bg-primary/15 text-primary" : "text-muted-foreground")}>
+              <LayoutGrid className="w-3.5 h-3.5" />
+            </button>
+            <button onClick={() => setView("table")} className={cn("p-1.5 rounded", view === "table" ? "bg-primary/15 text-primary" : "text-muted-foreground")}>
+              <List className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
       </div>
 
