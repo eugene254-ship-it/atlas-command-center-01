@@ -2,6 +2,7 @@ import type { Mission } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 import { TrendingUp, TrendingDown, Minus, LayoutGrid, List } from "lucide-react";
 import { useState } from "react";
+import { CreateMissionDialog } from "./CreateMissionDialog";
 
 interface MissionPortfolioProps {
   missions: Mission[];
