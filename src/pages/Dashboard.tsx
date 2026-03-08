@@ -112,9 +112,10 @@ const Dashboard = () => {
                 selectedId={selectedMission.id}
                 onSelect={(m) => { setSelectedMission(m); setActiveSection("overview"); }}
                 onDrillDown={(m) => navigate(`/mission/${m.id}`)}
+                canEdit={canEdit}
               />
             )}
-            {activeSection === "milestones" && <MilestoneTracker missionId={selectedMission.id} />}
+            {activeSection === "milestones" && <MilestoneTracker missionId={selectedMission.id} canEdit={canEdit} />}
             {activeSection === "funding" && <FundingModule />}
             {activeSection === "partners" && <PartnersModule />}
             {activeSection === "regions" && (
