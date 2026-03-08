@@ -21,9 +21,12 @@ interface DashboardNavProps {
   onSectionChange: (section: any) => void;
   viewMode: "executive" | "operator";
   onViewModeChange: (mode: "executive" | "operator") => void;
+  onSignOut?: () => void;
+  userEmail?: string | null;
+  role?: string | null;
 }
 
-export function DashboardNav({ activeSection, onSectionChange, viewMode, onViewModeChange }: DashboardNavProps) {
+export function DashboardNav({ activeSection, onSectionChange, viewMode, onViewModeChange, onSignOut, userEmail, role }: DashboardNavProps) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-14 border-b border-border bg-background/95 backdrop-blur-sm">
       <div className="flex items-center h-full px-4 gap-1">
@@ -68,6 +71,17 @@ export function DashboardNav({ activeSection, onSectionChange, viewMode, onViewM
           <span className="text-[10px] font-mono text-muted-foreground hidden lg:block">
             {new Date().toISOString().slice(0, 16).replace("T", " · ")} UTC
           </span>
+          {userEmail && (
+            <div className="flex items-center gap-2">
+              <span className="text-[9px] font-mono text-muted-foreground hidden xl:block truncate max-w-[120px]">{userEmail}</span>
+              {role && <span className="text-[8px] font-mono text-primary/70 uppercase">{role}</span>}
+              {onSignOut && (
+                <button onClick={onSignOut} className="text-[9px] font-mono text-muted-foreground hover:text-foreground transition-colors">
+                  Sign out
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </header>
